@@ -6,6 +6,7 @@ const schema = mongoose.Schema(
     chapterPreview: String,
     uploadDate: Date,
     click: int,
+    chapterContent: String,
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
@@ -13,6 +14,7 @@ const schema = mongoose.Schema(
     bookInfo: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "books",
+        required: true,
     }
   },
   {
