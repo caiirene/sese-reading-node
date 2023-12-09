@@ -47,3 +47,22 @@ export const updateChapterContent = (chapterId, newContent) => {
   return model.updateOne({ _id: chapterId }, { $set: { chapterContent: newContent } });
 };
 
+//计算一本书内有多少章
+export const countChaptersInBook = (bookId) => {
+  return model.countDocuments({ bookInfo: bookId });
+};
+
+//计算一本书的总字数
+export const sumOfChapterContentLength = async (bookId) => {
+  const chapters = await model.find({ bookInfo: bookId }, 'chapterContent');
+  return chapters.reduce((total, chapter) => total + (chapter.chapterContent.length || 0), 0);
+};
+
+//计算单章字数
+export const countWordsInChapter = async (chapterId) => {
+  const chapter = await model.findOne({ _id: chapterId }, 'chapterContent');
+  if (!chapter || !chapter.chapterContent) {
+    return 0; // 如果没有找到章节或章节没有内容，则返回0
+  }
+  return chapter.chapterContent.split(/\s+/).filter(Boolean).length;
+};
