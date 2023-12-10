@@ -1,5 +1,5 @@
 import * as dao from "./dao.js";
-//let currentUser = null;
+
 function ChapterRoutes(app) {
 
   //新建章 post
@@ -54,4 +54,4 @@ function ChapterRoutes(app) {
   app.put("/api/chapters/updatechapter/:chapterId", updateChapterContent);
   app.delete("/api/chapters/deletechapter:chapterId", deleteChapter);
 }
-export default UserRoutes;
+export default ChapterRoutes;

@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 const schema = mongoose.Schema(
   {
     chapterName: { type: String, required: true },
-    chapterNumber: { type: int, required: true },
+    chapterNumber: { type: Number, required: true },
     chapterPreview: String,
     uploadDate: Date,
-    click: int,
+    click: Number,
     chapterContent: String,
     author: {
       type: mongoose.Schema.Types.ObjectId,
