@@ -25,7 +25,7 @@ export const findAllChaptersForOneBookSorted = (bookId) => {
 export const findOneChapterInABook = (bookId, chapterNumber) => 
     model.findOne({ bookInfo: bookId, chapterNumber: chapterNumber });
 
-//删除单张
+//删除单章
 export const deleteChapter = (userId) => model.deleteOne({ _id: userId });
 
 //搜索句子，返回数据库内所有包含句子的章节
