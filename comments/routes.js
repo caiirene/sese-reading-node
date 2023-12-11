@@ -26,13 +26,19 @@ function CommentRoutes(app) {
     }    
   };
   const findCommentByUserId = async (req, res) => {
-    const userId = req.query?.userId;
-    if (userId) {
-        const comment = await dao.findCommentByUserId(userId);
-        res.json(comment);
-    } else {
+    try {
+        const readerId = req.query?.readerId;
+        if (readerId) {
+            const comment = await dao.findCommentByUserId(readerId);
+            res.json(comment);
+        } else {
+            res.json({});
+        }
+    } catch (error) {
+        console.error("Error in findCommentByUserId:", error);
         res.json({});
-    }
+      }
+    
   };
   const updateComment = async (req, res) => {
     const { commentId } = req.params;
