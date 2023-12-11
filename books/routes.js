@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
-import * as dao from './dao.js'; // Assuming you have this DAO for database operations
-// import { Book } from '../models/bookModel.js'; // Assuming you have this model
+import * as dao from './dao.js'; // this DAO for database operations
+import { Book } from './model.js'; 
 
 // Set up memory storage for multer
 const storage = multer.memoryStorage();
@@ -26,6 +26,17 @@ function BookRoutes(app) {
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error creating the book', error: error.message });
+    }
+  };
+
+  const findBooksByUserId = async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const books = await dao.findBooksByAuthor(userId);
+      res.json(books);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error retrieving books', error: error.message });
     }
   };
 
@@ -57,6 +68,8 @@ function BookRoutes(app) {
   app.get('/api/books/:bookId', findBookById);
   app.put('/api/books/:bookId', updateBook);
   app.delete('/api/books/:bookId', deleteBook);
+  app.get('/api/books/author/:userId', findBooksByUserId);
+
 }
 
 export default BookRoutes;
