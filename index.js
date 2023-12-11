@@ -40,6 +40,9 @@ if (process.env.NODE_ENV !== "development") {
   };
 }
 
+// 应用 session 中间件
+app.use(session(sessionOptions));
+
 
 
 // Middleware for parsing requests
