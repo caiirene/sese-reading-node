@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import UserRoutes from "./users/routes.js";
 import session from "express-session";
 import BookRoutes from "./books/routes.js"; 
+import CommentRoutes from "./comments/routes.js";
 const CONNECTION_STRING =
   process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/book";
 mongoose.connect(CONNECTION_STRING);
@@ -39,6 +40,7 @@ app.use(session(sessionOptions));
 app.use(express.json());
 UserRoutes(app);
 BookRoutes(app);
+CommentRoutes(app);
 
 
 app.get("/", (req, res) => {

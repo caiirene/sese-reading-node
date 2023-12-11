@@ -6,3 +6,5 @@ export const findBookById = (bookId) => model.findById(bookId);
 export const updateBook = (bookId, book) =>
   model.updateOne({ _id: bookId }, { $set: book });
 export const deleteBook = (bookId) => model.deleteOne({ _id: bookId });
+
+export const findBookByAuthorId = (authorId) => model.findOne({ authorId: authorId });
