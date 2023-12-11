@@ -1,34 +1,33 @@
-// Initialize express router
-import * as dao from "./dao.js";
+import express from 'express';
+import multer from 'multer';
+import * as dao from './dao.js'; // this DAO for database operations
+import { Book } from './model.js'; 
+
+// Set up memory storage for multer
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 function BookRoutes(app) {
   const createBook = async (req, res) => {
-    const book = await dao.createBook(req.body);
-    res.json(book);
+    try {
+      const { title, author, introduction } = req.body;
+      let newBook = {
+        title,
+        author,
+        introduction,
+      };
+      // If there's a file uploaded, handle it
+      if (req.file) {
+        const coverImageBase64 = req.file.buffer.toString('base64');
+        newBook.coverImage = coverImageBase64;
+      }
+      const book = await Book.create(newBook); // Directly using Book model
+      res.status(201).json(book);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error creating the book', error: error.message });
+    }
   };
-  const deleteBook = async (req, res) => {
-    const status = await dao.deleteBook(req.params.bookId);
-    res.json(status);
-  };
-  const findAllBooks = async (req, res) => {
-    const books = await dao.findAllBooks();
-    res.json(books);
-  };
-  const findBookById = async (req, res) => {
-    const book = await dao.findBookById(req.params.bookId);
-    res.json(book);
-  };
-  const updateBook = async (req, res) => {
-    const { bookId } = req.params;
-    const status = await dao.updateBook(bookId, req.body);
-    res.json(status);
-  };
-
-  //测试用函数 get
-  const testBook = async (req, res) => {
-    res.send(`welcome testBook!!!`);
-  };
-  app.get("/api/book/testChapters", testBook);
-
 
   const findBooksByUserId = async (req, res) => {
     try {
@@ -41,14 +40,36 @@ function BookRoutes(app) {
     }
   };
 
+  // Other CRUD operations
+  const deleteBook = async (req, res) => {
+    const status = await dao.deleteBook(req.params.bookId);
+    res.json(status);
+  };
 
+  const findAllBooks = async (req, res) => {
+    const books = await dao.findAllBooks();
+    res.json(books);
+  };
 
+  const findBookById = async (req, res) => {
+    const book = await dao.findBookById(req.params.bookId);
+    res.json(book);
+  };
 
-  app.post("/api/books", createBook);
-  app.get("/api/books", findAllBooks);
-  app.get("/api/books/:bookId", findBookById);
-  app.put("/api/books/:bookId", updateBook);
-  app.delete("/api/books/:bookId", deleteBook);
+  const updateBook = async (req, res) => {
+    const { bookId } = req.params;
+    const status = await dao.updateBook(bookId, req.body);
+    res.json(status);
+  };
+
+  // Route setup
+  app.post('/api/books', upload.single('coverImage'), createBook);
+  app.get('/api/books', findAllBooks);
+  app.get('/api/books/:bookId', findBookById);
+  app.put('/api/books/:bookId', updateBook);
+  app.delete('/api/books/:bookId', deleteBook);
   app.get('/api/books/author/:userId', findBooksByUserId);
+
 }
+
 export default BookRoutes;

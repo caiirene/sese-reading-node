@@ -1,4 +1,4 @@
-import model from "./model.js";
+import { Book as model } from "./model.js";
 
 export const createBook = (book) => model.create(book);
 export const findAllBooks = () => model.find();
