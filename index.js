@@ -18,14 +18,13 @@ db.on("connected", () => {
   console.log(`Database name: ${db.name}`);
 });
 
-
 const app = express();
-
-// CORS and Session Configuration
-app.use(cors({
-  credentials: true,
-  origin: 'http://localhost:3000'
-}));
+app.use(
+  cors({
+    credentials: true,
+    origin: process.env.NODE_ENV === "production" ? process.env.FRONTEND_URL : process.env.FRONTEND_URL_LOCAL,
+  })
+);
 const sessionOptions = {
   secret: "any string",
   resave: false,
@@ -65,5 +64,4 @@ app.listen(process.env.PORT || 4000);
 app.listen(56100, () => {
   console.log("Server is running on port 56100");
 });
-
 
