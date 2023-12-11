@@ -22,10 +22,33 @@ function BookRoutes(app) {
     const status = await dao.updateBook(bookId, req.body);
     res.json(status);
   };
+
+  //测试用函数 get
+  const testBook = async (req, res) => {
+    res.send(`welcome testBook!!!`);
+  };
+  app.get("/api/book/testChapters", testBook);
+
+
+  const findBooksByUserId = async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const books = await dao.findBooksByAuthor(userId);
+      res.json(books);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error retrieving books', error: error.message });
+    }
+  };
+
+
+
+
   app.post("/api/books", createBook);
   app.get("/api/books", findAllBooks);
   app.get("/api/books/:bookId", findBookById);
   app.put("/api/books/:bookId", updateBook);
   app.delete("/api/books/:bookId", deleteBook);
+  app.get('/api/books/author/:userId', findBooksByUserId);
 }
 export default BookRoutes;

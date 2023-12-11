@@ -16,8 +16,8 @@ function ChapterRoutes(app) {
 
   //找出一本书所有章节（参数：bookId）（排序版）get
   const findAllChaptersForOneBookSorted = async(req, res) => {
-    const ChaptersForOneBookSorted = await dao.findAllChaptersForOneBookSorted(req.params.bookId);
-    res.json(ChaptersForOneBookSorted);
+    const chaptersForOneBookSorted = await dao.findAllChaptersForOneBookSorted(req.params.bookId);
+    res.json(chaptersForOneBookSorted);
   };
 
   //找到单章 （参数：bookId，chapterNumber）get
@@ -40,7 +40,7 @@ function ChapterRoutes(app) {
   };
 
   //测试用函数 get
-  const testChapter = async() => {
+  const testChapter = async(req, res) => {
     res.send(`welcome testChapter!!!`);
   };
   app.get("/api/chapters/testChapters", testChapter);
