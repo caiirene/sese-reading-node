@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 import UserRoutes from "./users/routes.js";
 import session from "express-session";
 import BookRoutes from "./books/routes.js"; // Adjust the path if needed
+import ChapterRoutes from "./chapters/routes.js"; 
+
 
 const CONNECTION_STRING = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/book";
 mongoose.connect(CONNECTION_STRING);
@@ -15,6 +17,7 @@ db.on("connected", () => {
   console.log("Connected to MongoDB");
   console.log(`Database name: ${db.name}`);
 });
+
 
 const app = express();
 
@@ -28,6 +31,7 @@ const sessionOptions = {
   resave: false,
   saveUninitialized: false,
 };
+
 if (process.env.NODE_ENV !== "development") {
   sessionOptions.proxy = true;
   sessionOptions.cookie = {
@@ -35,7 +39,8 @@ if (process.env.NODE_ENV !== "development") {
     secure: true,
   };
 }
-app.use(session(sessionOptions));
+
+
 
 // Middleware for parsing requests
 app.use(express.json());
@@ -47,14 +52,15 @@ app.use('/uploads', express.static('uploads'));
 // Routes
 UserRoutes(app);
 BookRoutes(app);
-
+ChapterRoutes(app);
 // Default route
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello World sese reading!");
+});
+// Server start
+app.listen(process.env.PORT || 4000);
+app.listen(56100, () => {
+  console.log("Server is running on port 56100");
 });
 
-// Server start
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port 56100`);
-});
+
