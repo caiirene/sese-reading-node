@@ -19,7 +19,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: 'http://localhost:3000'
+    origin: process.env.NODE_ENV === "production" ? process.env.FRONTEND_URL : process.env.FRONTEND_URL_LOCAL,
   })
 );
 const sessionOptions = {
@@ -49,5 +49,4 @@ app.listen(process.env.PORT || 4000);
 app.listen(56100, () => {
   console.log("Server is running on port 56100");
 });
-
 
