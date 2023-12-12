@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const bookSchema = mongoose.Schema(
   {
-    title: {
+    name: {
       type: String,
       required: true
     },
@@ -15,7 +15,7 @@ const bookSchema = mongoose.Schema(
       ref: "users",
       required: true
     },
-    introduction: {
+    description: {
       type: String,
     },
     coverImage: {
