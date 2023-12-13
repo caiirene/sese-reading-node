@@ -17,6 +17,12 @@ function BookRoutes(app) {
     const book = await dao.findBookById(req.params.bookId);
     res.json(book);
   };
+  const findBooksbyAuthor = async (req, res) => {
+    console.log("findBooksbyAuthortest",req);
+    const book = await dao.findBooksByAuthor(req.params.author);
+    console.log("booktest",book);
+    res.json(book);
+  };
   const updateBook = async (req, res) => {
     const { bookId } = req.params;
     const status = await dao.updateBook(bookId, req.body);
@@ -27,5 +33,6 @@ function BookRoutes(app) {
   app.get("/api/books/:bookId", findBookById);
   app.put("/api/books/:bookId", updateBook);
   app.delete("/api/books/:bookId", deleteBook);
+  app.get("/api/books/author/:authorId", findBooksbyAuthor);
 }
 export default BookRoutes;
