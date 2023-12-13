@@ -35,7 +35,7 @@ function ChapterRoutes(app) {
   //修改文章（参数：chapterId)
   const updateChapterContent = async(req, res) => {
     const content = req.body.chapterContent;
-    const status = await dao.updateChapterContent(req.params.chapterId, content);
+    const status = await dao.updateChapterContent(req.params._id, content);
     res.json(status);
   };
 
