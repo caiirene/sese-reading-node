@@ -6,10 +6,12 @@ import UserRoutes from "./users/routes.js";
 import session from "express-session";
 import BookRoutes from "./books/routes.js"; 
 import CommentRoutes from "./comments/routes.js";
+import ChapterRoutes from "./chapters/routes.js";
 const CONNECTION_STRING =
   process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/sese";
 mongoose.connect(CONNECTION_STRING);
-// check connected successfully
+
+// Check if connected successfully
 const db = mongoose.connection;
 db.on("connected", () => {
   console.log("Connected to MongoDB");
@@ -20,7 +22,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: 'http://localhost:3000'
+    origin: process.env.NODE_ENV === "PRODUCTION" ? process.env.FRONTEND_URL : process.env.FRONTEND_URL_LOCAL,
   })
 );
 const sessionOptions = {
@@ -28,6 +30,7 @@ const sessionOptions = {
   resave: false,
   saveUninitialized: false,
 };
+
 if (process.env.NODE_ENV !== "development") {
   sessionOptions.proxy = true;
   sessionOptions.cookie = {
@@ -35,21 +38,33 @@ if (process.env.NODE_ENV !== "development") {
     secure: true,
   };
 }
+
+// 应用 session 中间件
 app.use(session(sessionOptions));
 
+
+
+// Middleware for parsing requests
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Static files for uploaded images
+app.use('/uploads', express.static('uploads'));
+
+// Routes
 UserRoutes(app);
 BookRoutes(app);
 CommentRoutes(app);
 
 
+ChapterRoutes(app);
+// Default route
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello World sese reading!");
 });
-
+// Server start
 app.listen(process.env.PORT || 4000);
 app.listen(56100, () => {
   console.log("Server is running on port 56100");
 });
-
 
