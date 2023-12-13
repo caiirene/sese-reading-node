@@ -7,7 +7,7 @@ import session from "express-session";
 import BookRoutes from "./books/routes.js"; 
 import CommentRoutes from "./comments/routes.js";
 const CONNECTION_STRING =
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/book";
+  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/sese";
 mongoose.connect(CONNECTION_STRING);
 // check connected successfully
 const db = mongoose.connection;
