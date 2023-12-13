@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const bookSchema = mongoose.Schema(
   {
-    title: {
+    _id: mongoose.Schema.Types.ObjectId,
+    name: {
       type: String,
       required: true
     },
@@ -11,12 +12,21 @@ const bookSchema = mongoose.Schema(
       ref: "users",
       required: true
     },
-    introduction: {
+    description: {
       type: String,
+      required: true
     },
     coverImage: {
-      type: String // Storing Base64 image data as a string
-      // If cover images are not mandatory, you can remove 'required: true'
+      type: String,
+      required: true // Since you have a cover image URL in your document, mark this as required
+    },
+    pubDate: {
+      type: Date,
+      required: true
+    },
+    authorName: {
+      type: String,
+      required: true
     }
   },
   {
@@ -26,4 +36,3 @@ const bookSchema = mongoose.Schema(
 );
 
 export default bookSchema;
-

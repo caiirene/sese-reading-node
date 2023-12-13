@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
-import * as dao from './dao.js'; // this DAO for database operations
-import { Book } from './model.js'; 
+import * as dao from './dao.js'; // DAO for database operations
+import { Book } from './model.js';
 
 // Set up memory storage for multer
 const storage = multer.memoryStorage();
@@ -10,16 +10,16 @@ const upload = multer({ storage: storage });
 function BookRoutes(app) {
   const createBook = async (req, res) => {
     try {
-      const { title, author, introduction } = req.body;
+      const { name, author, description, authorName } = req.body;
       let newBook = {
-        title,
+        name,
         author,
-        introduction,
+        description,
+        authorName
       };
       // If there's a file uploaded, handle it
       if (req.file) {
-        const coverImageBase64 = req.file.buffer.toString('base64');
-        newBook.coverImage = coverImageBase64;
+        newBook.coverImage = req.file.buffer.toString('base64');
       }
       const book = await Book.create(newBook); // Directly using Book model
       res.status(201).json(book);
@@ -69,7 +69,6 @@ function BookRoutes(app) {
   app.put('/api/books/:bookId', updateBook);
   app.delete('/api/books/:bookId', deleteBook);
   app.get('/api/books/author/:userId', findBooksByUserId);
-
 }
 
 export default BookRoutes;
