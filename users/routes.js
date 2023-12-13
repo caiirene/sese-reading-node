@@ -48,8 +48,15 @@ function UserRoutes(app) {
   };
 
   const account = async (req, res) => {
-    res.json(req.session['currentUser']);
+    if (req.session && req.session['currentUser']) {
+      // If session and currentUser exist, return currentUser
+      res.json(req.session['currentUser']);
+    } else {
+      // If not, send an appropriate response
+      res.status(404).json({ message: "No current user in session" });
+    }
   };
+  
 
   const signout = (req, res) => {
     req.session.destroy();
