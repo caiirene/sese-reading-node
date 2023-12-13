@@ -25,6 +25,7 @@ app.use(cors({
     origin: process.env.NODE_ENV === "PRODUCTION" ? process.env.FRONTEND_URL : process.env.FRONTEND_URL_LOCAL,
   })
 );
+app.options('*', cors());
 const sessionOptions = {
   secret: "any string",
   resave: false,
