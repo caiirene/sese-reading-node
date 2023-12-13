@@ -4,11 +4,11 @@ import cors from "cors";
 import mongoose from "mongoose";
 import UserRoutes from "./users/routes.js";
 import session from "express-session";
-import BookRoutes from "./books/routes.js"; // Adjust the path if needed
-import ChapterRoutes from "./chapters/routes.js"; 
-
-
-const CONNECTION_STRING = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/book";
+import BookRoutes from "./books/routes.js"; 
+import CommentRoutes from "./comments/routes.js";
+import ChapterRoutes from "./chapters/routes.js";
+const CONNECTION_STRING =
+  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/sese";
 mongoose.connect(CONNECTION_STRING);
 
 // Check if connected successfully
@@ -54,6 +54,9 @@ app.use('/uploads', express.static('uploads'));
 // Routes
 UserRoutes(app);
 BookRoutes(app);
+CommentRoutes(app);
+
+
 ChapterRoutes(app);
 // Default route
 app.get("/", (req, res) => {
