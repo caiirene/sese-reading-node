@@ -21,9 +21,13 @@ export const findAllChaptersForOneBookSorted = (bookId) => {
   return chapterModel.find({ bookInfo: bookId }).sort({ chapterNumber: 1 });
 };
 
-//找到单章
+//找到单章,有章节数
 export const findOneChapterInABook = (bookId, chapterNumber) => 
 chapterModel.findOne({ bookInfo: bookId, chapterNumber: chapterNumber });
+
+//找到单章
+export const findOneChapter = (chapterId) => 
+chapterModel.findOne({ _id: chapterId});
 
 //删除单章
 export const deleteChapter = (userId) => chapterModel.deleteOne({ _id: userId });
@@ -42,9 +46,9 @@ export const findBooksByChapterContent = (searchString) => {
   ]);
 };
 
-//修改单章，只接收id和文章内容作为参数
-export const updateChapterContent = (chapterId, newContent) => {
-  return chapterModel.updateOne({ _id: chapterId }, { $set: { chapterContent: newContent } });
+//修改单章，修改一整个JSON
+export const updateChapterContent = (chapterId, newChapter) => {
+  return chapterModel.updateOne({ _id: chapterId }, { $set: newChapter });
 };
 
 //计算一本书内有多少章
