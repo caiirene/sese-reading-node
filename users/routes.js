@@ -10,6 +10,7 @@ function UserRoutes(app) {
     res.json(status);
 };
 
+
   const findAllUsers = async (req, res) => {
     const users = await dao.findAllUsers();
     res.json(users);
@@ -51,6 +52,7 @@ function UserRoutes(app) {
     res.json(req.session['currentUser']);
   };
 
+  
   const signout = (req, res) => {
     req.session.destroy();
     res.json(200);

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
-import schema from "./schema.js";
-const model = mongoose.model("books", schema);
-export default model;
+import bookSchema from "./schema.js";
+
+const Book = mongoose.model("Book", bookSchema); // Ensure the model name is "Book" not "books"
+export { Book }; // Use named export for consistency
