@@ -8,7 +8,7 @@ import BookRoutes from "./books/routes.js";
 import CommentRoutes from "./comments/routes.js";
 import ChapterRoutes from "./chapters/routes.js";
 const CONNECTION_STRING =
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/sese";
+  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/book";
 mongoose.connect(CONNECTION_STRING);
 
 // Check if connected successfully
