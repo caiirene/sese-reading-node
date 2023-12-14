@@ -26,7 +26,11 @@ app.use(cors({
     origin: process.env.FRONTEND_URL,
   })
 );
-app.options('*', cors());
+app.options('*', cors({
+  credentials: true,
+  origin: process.env.FRONTEND_URL, // Same configuration for preflight requests
+}));
+//app.options('*', cors());
 const sessionOptions = {
   secret: "any string",
   resave: false,
