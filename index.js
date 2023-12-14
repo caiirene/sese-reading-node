@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import UserRoutes from "./users/routes.js";
 import session from "express-session";
+import MongoStore from 'connect-mongo'; //
 import BookRoutes from "./books/routes.js"; 
 import CommentRoutes from "./comments/routes.js";
 import ChapterRoutes from "./chapters/routes.js";
@@ -23,9 +24,18 @@ app.use(cors({
     credentials: true,
     //origin:process.env.FRONTEND_URL_LOCAL,
     origin: process.env.NODE_ENV === "production" ? process.env.FRONTEND_URL : process.env.FRONTEND_URL_LOCAL,
-    origin: process.env.FRONTEND_URL,
+    //origin: process.env.FRONTEND_URL,
   })
 );
+app.use(session({
+  secret: process.env.SESSION_SECRET, // Use a secure and unique secret
+  resave: false,
+  saveUninitialized: true,
+  store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
+  cookie: {
+    // Cookie options, e.g., secure: true in production
+  }
+}));
 app.options('*', cors({
   credentials: true,
   origin: process.env.FRONTEND_URL, // Same configuration for preflight requests
