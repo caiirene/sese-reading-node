@@ -14,53 +14,57 @@ import chapterModel from "./model.js";
 export const createChapter = (newChapter) => chapterModel.create(newChapter);
 
 //找到一本书全部章节
-export const findAllChaptersForOneBook = (bookId) => model.find({ bookInfo: bookId });
+export const findAllChaptersForOneBook = (bookId) => chapterModel.find({ bookInfo: bookId });
 
 //全部章节排序版
 export const findAllChaptersForOneBookSorted = (bookId) => {
-  return model.find({ bookInfo: bookId }).sort({ chapterNumber: 1 });
+  return chapterModel.find({ bookInfo: bookId }).sort({ chapterNumber: 1 });
 };
 
-//找到单章
+//找到单章,有章节数
 export const findOneChapterInABook = (bookId, chapterNumber) => 
-    model.findOne({ bookInfo: bookId, chapterNumber: chapterNumber });
+chapterModel.findOne({ bookInfo: bookId, chapterNumber: chapterNumber });
+
+//找到单章
+export const findOneChapter = (chapterId) => 
+chapterModel.findOne({ _id: chapterId});
 
 //删除单章
-export const deleteChapter = (userId) => model.deleteOne({ _id: userId });
+export const deleteChapter = (userId) => chapterModel.deleteOne({ _id: userId });
 
 //搜索句子，返回数据库内所有包含句子的章节
 export const findChaptersByContent = (searchString) => {
-  return model.find({ chapterContent: new RegExp(searchString, 'i') });
+  return chapterModel.find({ chapterContent: new RegExp(searchString, 'i') });
 };
 
 //搜索句子，返回数据库内所有包含句子的书
 export const findBooksByChapterContent = (searchString) => {
-  return model.aggregate([
+  return chapterModel.aggregate([
     { $match: { chapterContent: new RegExp(searchString, 'i') } },
     { $group: { _id: "$bookInfo" } },
     { $project: { _id: 0, bookId: "$_id" } }
   ]);
 };
 
-//修改单章，只接收id和文章内容作为参数
-export const updateChapterContent = (chapterId, newContent) => {
-  return model.updateOne({ _id: chapterId }, { $set: { chapterContent: newContent } });
+//修改单章，修改一整个JSON
+export const updateChapterContent = (chapterId, newChapter) => {
+  return chapterModel.updateOne({ _id: chapterId }, { $set: newChapter });
 };
 
 //计算一本书内有多少章
 export const countChaptersInBook = (bookId) => {
-  return model.countDocuments({ bookInfo: bookId });
+  return chapterModel.countDocuments({ bookInfo: bookId });
 };
 
 //计算一本书的总字数
 export const sumOfChapterContentLength = async (bookId) => {
-  const chapters = await model.find({ bookInfo: bookId }, 'chapterContent');
+  const chapters = await chapterModel.find({ bookInfo: bookId }, 'chapterContent');
   return chapters.reduce((total, chapter) => total + (chapter.chapterContent.length || 0), 0);
 };
 
 //计算单章字数
 export const countWordsInChapter = async (chapterId) => {
-  const chapter = await model.findOne({ _id: chapterId }, 'chapterContent');
+  const chapter = await chapterModel.findOne({ _id: chapterId }, 'chapterContent');
   if (!chapter || !chapter.chapterContent) {
     return 0; // 如果没有找到章节或章节没有内容，则返回0
   }

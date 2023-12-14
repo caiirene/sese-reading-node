@@ -4,11 +4,11 @@ import cors from "cors";
 import mongoose from "mongoose";
 import UserRoutes from "./users/routes.js";
 import session from "express-session";
-import BookRoutes from "./books/routes.js"; // Adjust the path if needed
-import ChapterRoutes from "./chapters/routes.js"; 
-
-
-const CONNECTION_STRING = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/book";
+import BookRoutes from "./books/routes.js"; 
+import CommentRoutes from "./comments/routes.js";
+import ChapterRoutes from "./chapters/routes.js";
+const CONNECTION_STRING =
+  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/sese";
 mongoose.connect(CONNECTION_STRING);
 
 // Check if connected successfully
@@ -18,14 +18,14 @@ db.on("connected", () => {
   console.log(`Database name: ${db.name}`);
 });
 
-
 const app = express();
-
-// CORS and Session Configuration
 app.use(cors({
-  credentials: true,
-  origin: 'http://localhost:3000'
-}));
+    credentials: true,
+    //origin:process.env.FRONTEND_URL_LOCAL,
+    origin: process.env.NODE_ENV === "PRODUCTION" ? process.env.FRONTEND_URL : process.env.FRONTEND_URL_LOCAL,
+  })
+);
+app.options('*', cors());
 const sessionOptions = {
   secret: "any string",
   resave: false,
@@ -40,6 +40,9 @@ if (process.env.NODE_ENV !== "development") {
   };
 }
 
+// 应用 session 中间件
+app.use(session(sessionOptions));
+
 
 
 // Middleware for parsing requests
@@ -52,6 +55,9 @@ app.use('/uploads', express.static('uploads'));
 // Routes
 UserRoutes(app);
 BookRoutes(app);
+CommentRoutes(app);
+
+
 ChapterRoutes(app);
 // Default route
 app.get("/", (req, res) => {
@@ -62,5 +68,4 @@ app.listen(process.env.PORT || 4000);
 app.listen(56100, () => {
   console.log("Server is running on port 56100");
 });
-
 
