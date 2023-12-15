@@ -18,7 +18,6 @@ const bookSchema = mongoose.Schema(
     },
     coverImage: {
       type: String,
-      required: true // Since you have a cover image URL in your document, mark this as required
     },
     pubDate: {
       type: Date,
