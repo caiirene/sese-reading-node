@@ -30,4 +30,3 @@ const bookSchema = mongoose.Schema(
 );
 
 export default bookSchema;
-

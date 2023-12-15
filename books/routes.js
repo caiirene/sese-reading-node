@@ -8,24 +8,17 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 function BookRoutes(app) {
+
   const createBook = async (req, res) => {
     try {
-      const { title, author, introduction } = req.body;
-      let newBook = {
-        title,
-        author,
-        introduction,
-      };
-      // If there's a file uploaded, handle it
-      if (req.file) {
-        const coverImageBase64 = req.file.buffer.toString('base64');
-        newBook.coverImage = coverImageBase64;
-      }
-      const book = await Book.create(newBook); // Directly using Book model
-      res.status(201).json(book);
+      const { name, authorName, description, coverImage, author } = req.body;
+
+      const addedBook = await dao.createBook({ name, authorName, description, coverImage, author });
+
+      res.json(addedBook);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Error creating the book', error: error.message });
+      console.error('Error in create book by user id:', error);
+      res.status(500).json({ error: 'Error creating book' });
     }
   };
 
