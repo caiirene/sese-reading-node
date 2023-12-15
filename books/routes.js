@@ -19,14 +19,6 @@ function BookRoutes(app) {
         pubDate: new Date(), // Set the publication date to the current date
       };
 
-      // If there's a file uploaded, handle it
-      if (req.file) {
-        // If using base64, make sure your front end sends the image in the correct format
-        newBook.coverImage = req.file.buffer.toString('base64'); 
-      } else {
-        // Handle case when no image is provided (optional)
-        // e.g., set a default image or leave it undefined
-      }
 
       const book = await Book.create(newBook); // Directly using Book model
       res.status(201).json(book);
@@ -70,7 +62,7 @@ function BookRoutes(app) {
   };
 
   // Route setup
-  app.post('/api/books', upload.single('coverImage'), createBook);
+  app.post('/api/books', createBook);
   app.get('/api/books', findAllBooks);
   app.get('/api/books/:bookId', findBookById);
   app.put('/api/books/:bookId', updateBook);
