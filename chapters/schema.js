@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const schema = mongoose.Schema(
   {
     chapterName: { type: String, required: true },
-    chapterNumber: { type: Number, required: true },
+    chapterNumber: Number,
     chapterPreview: String,
     uploadDate: Date,
     click: Number,
